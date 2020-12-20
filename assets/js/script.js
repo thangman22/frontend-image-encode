@@ -1,9 +1,9 @@
 // MozJPEG
-import mozEnc from "../codecs/mozjpeg/enc/mozjpeg_enc.js";
+import mozEnc from "/squoosh/codecs/mozjpeg/enc/mozjpeg_enc.js";
 // WebP
-import webp_enc from "../codecs/webp/enc/webp_enc.js";
+import webp_enc from "/squoosh/codecs/webp/enc/webp_enc.js";
 // AVIF
-import avif from "../codecs/avif/enc/avif_enc.js";
+import avif from "/squoosh/codecs/avif/enc/avif_enc.js";
 
 // JXL
 // WP2
@@ -12,7 +12,7 @@ import avif from "../codecs/avif/enc/avif_enc.js";
 // ImageQuant
 
 // Resize
-import * as resize from "../codecs/resize/pkg/squoosh_resize.js";
+import * as resize from "/squoosh/codecs/resize/pkg/squoosh_resize.js";
 
 export const loadImage = async src => {
   // Load image
@@ -121,7 +121,7 @@ export const encodeWebP = async (image, opts) => {
 };
 
 export const rotateImage = async (image, rotateDimention) => {
-  const r = await fetch("assets/codecs/rotate/rotate.wasm");
+  const r = await fetch("/squoosh/codecs/rotate/rotate.wasm");
   const buf = await r.arrayBuffer();
   const instancePromise = await WebAssembly.instantiate(buf);
   const instance = instancePromise.instance;
@@ -149,7 +149,7 @@ export const rotateImage = async (image, rotateDimention) => {
 };
 
 export const resizeImage = async (image, outputWidth, outputHeight, aspectRatio = true) => {
-  await resize.default("assets/codecs/resize/pkg/squoosh_resize_bg.wasm");
+  await resize.default("/squoosh/codecs/resize/pkg/squoosh_resize_bg.wasm");
   if (aspectRatio) {
     const finalSize = _resizeWithAspect(image.width, image.height, outputWidth, outputHeight)
     outputWidth = finalSize.width
