@@ -1,7 +1,17 @@
+// MozJPEG
 import mozEnc from "../codecs/mozjpeg/enc/mozjpeg_enc.js";
+// WebP
 import webp_enc from "../codecs/webp/enc/webp_enc.js";
+// AVIF
 import avif from "../codecs/avif/enc/avif_enc.js";
 
+// JXL
+// WP2
+// PNG
+// OxiPNG
+// ImageQuant
+
+// Resize
 import * as resize from "../codecs/resize/pkg/squoosh_resize.js";
 
 export const loadImage = async src => {
@@ -36,7 +46,7 @@ export const encodeAvif = async (image, opts) => {
     opts = defaultOpts
   }
   const result = module.encode(image.data, image.width, image.height, opts);
-  return result;
+  return _imageDataToBolb(result);
 };
 
 export const encodeJpeg = async (image, opts) => {
@@ -66,7 +76,7 @@ export const encodeJpeg = async (image, opts) => {
   }
 
   const result = module.encode(image.data, image.width, image.height, opts);
-  return result;
+  return _imageDataToBolb(result);
 };
 
 export const encodeWebP = async (image, opts) => {
@@ -107,7 +117,7 @@ export const encodeWebP = async (image, opts) => {
   }
 
   const result = module.encode(image.data, image.width, image.height, opts);
-  return result;
+  return _imageDataToBolb(result);
 };
 
 export const rotateImage = async (image, rotateDimention) => {
@@ -162,19 +172,7 @@ export const resizeImage = async (image, outputWidth, outputHeight, aspectRatio 
     opts.premultiply,
     opts.linearRGB
   )
-  return _Uint8ArrayToImage(uintArray, outputWidth, outputHeight)
-};
-
-export const setImageFromUrl = async (url, id) => {
-  const img = document.getElementById(id);
-  img.src = url;
-};
-
-export const setImageFromImageData = async (imageResult, type, id) => {
-  const blob = new Blob([imageResult], { type: type });
-  const blobURL = URL.createObjectURL(blob);
-  const img = document.getElementById(id);
-  img.src = blobURL;
+  return _Uint8ArrayToUrl(uintArray, outputWidth, outputHeight)
 };
 
 function _resizeWithAspect(
@@ -203,7 +201,12 @@ function _resizeWithAspect(
   }
 }
 
-function _Uint8ArrayToImage(ubuf, width, height) {
+const _imageDataToBolb = async (imageResult, type, id) => {
+  const blob = new Blob([imageResult], { type: type });
+  return URL.createObjectURL(blob);
+};
+
+function _Uint8ArrayToUrl(ubuf, width, height) {
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;

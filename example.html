@@ -5,30 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Image Encode</title>
     <script type="module">
-      import { loadImage, encodeWebP, setImageFromImageData, encodeAvif, encodeJpeg, rotateImage, setImageFromUrl, resizeImage } from "./assets/js/script.js";
+      import { loadImage, encodeWebP, encodeAvif, encodeJpeg, rotateImage, resizeImage } from "./assets/js/script.js";
 
       (async () => {
-        const image = await loadImage("./assets/images/example.png");
+        const image = await loadImage("./assets/images/example.jpg");
         console.log('Image Loaded');
         
         const webPImageResult = await encodeWebP(image);
-        await setImageFromImageData(webPImageResult, "image/webp", "webp-image");
+        document.getElementById('webp-image').src = webPImageResult
         console.log('Webp Encoded');
 
         const avifImageResult = await encodeAvif(image);
-        await setImageFromImageData(avifImageResult, "image/avif", "avif-image");
+        document.getElementById('avif-image').src = avifImageResult
         console.log('Avif Encoded');
 
         const jpegImageResult = await encodeJpeg(image);
-        await setImageFromImageData(jpegImageResult, "image/jpeg", "jpeg-image");
+        document.getElementById('jpeg-image').src = jpegImageResult
         console.log('Jpeg Encoded');
 
         const rotateImageResult = await rotateImage(image, 90);
-        await setImageFromUrl(rotateImageResult,"rotate-image");
+        document.getElementById('rotate-image').src = rotateImageResult
         console.log('Rotate Image');
 
-        const resizeImageResult = await resizeImage(image,500,null,true)
-        await setImageFromUrl(resizeImageResult, "resize-image");
+        const resizeImageResult = await resizeImage(image,100,null,true)
+        document.getElementById('resize-image').src = resizeImageResult
         console.log('Resize Image');
       })();
     </script>
@@ -36,7 +36,7 @@
   <body>
     <div>
       Original Image
-      <div><img src="./assets/images/example.png" width="500" /></div>
+      <div><img src="./assets/images/example.jpg" width="500" /></div>
       WebP Image
       <div><img id="webp-image" width="500" /></div>
       Avif Image
@@ -46,7 +46,7 @@
       Rotate Image
       <div><img id="rotate-image" width="500" /></div>
       Resize Image
-      <div><img id="resize-image" width="500" /></div>
+      <div><img id="resize-image" width="100" /></div>
     </div>
   </body>
 </html>
