@@ -5,22 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Image Encode</title>
     <script type="module">
-      import { loadImage, encodeWebP, setImage, encodeAvif, encodeJpeg } from "./assets/js/script.js";
+      import { loadImage, encodeWebP, setImageFromImageData, encodeAvif, encodeJpeg, rotateImage, setImageFromUrl, resizeImage } from "./assets/js/script.js";
 
       (async () => {
         const image = await loadImage("./assets/images/example.png");
         console.log('Image Loaded');
+        
         const webPImageResult = await encodeWebP(image);
-        await setImage(webPImageResult, "image/webp", "webp-image");
+        await setImageFromImageData(webPImageResult, "image/webp", "webp-image");
         console.log('Webp Encoded');
 
         const avifImageResult = await encodeAvif(image);
-        await setImage(avifImageResult, "image/avif", "avif-image");
+        await setImageFromImageData(avifImageResult, "image/avif", "avif-image");
         console.log('Avif Encoded');
 
         const jpegImageResult = await encodeJpeg(image);
-        await setImage(jpegImageResult, "image/jpeg", "jpeg-image");
+        await setImageFromImageData(jpegImageResult, "image/jpeg", "jpeg-image");
         console.log('Jpeg Encoded');
+
+        const rotateImageResult = await rotateImage(image, 90);
+        await setImageFromUrl(rotateImageResult,"rotate-image");
+        console.log('Rotate Image');
+
+        const resizeImageResult = await resizeImage(image,500,null,true)
+        await setImageFromUrl(resizeImageResult, "resize-image");
+        console.log('Resize Image');
       })();
     </script>
   </head>
@@ -34,6 +43,10 @@
       <div><img id="avif-image" width="500" /></div>
       Jpeg Image
       <div><img id="jpeg-image" width="500" /></div>
+      Rotate Image
+      <div><img id="rotate-image" width="500" /></div>
+      Resize Image
+      <div><img id="resize-image" width="500" /></div>
     </div>
   </body>
 </html>

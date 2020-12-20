@@ -121,7 +121,6 @@ async function init(input) {
   }
 
   const { instance, module } = await load(await input, imports);
-
   wasm = instance.exports;
   init.__wbindgen_wasm_module = module;
 

@@ -1,8 +1,10 @@
+import mozEnc from "../codecs/mozjpeg/enc/mozjpeg_enc.js";
 import webp_enc from "../codecs/webp/enc/webp_enc.js";
 import avif from "../codecs/avif/enc/avif_enc.js";
-import mozEnc from '../codecs/mozjpeg/enc/mozjpeg_enc.js';
 
-export const loadImage = async (src) => {
+import * as resize from "../codecs/resize/pkg/squoosh_resize.js";
+
+export const loadImage = async src => {
   // Load image
   const img = document.createElement("img");
   img.src = src;
@@ -14,11 +16,12 @@ export const loadImage = async (src) => {
   const ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0);
   return ctx.getImageData(0, 0, img.width, img.height);
-}
+};
 
-export const encodeAvif = async (image) => {
+export const encodeAvif = async (image, opts) => {
   const module = await avif();
-  const result = module.encode(image.data, image.width, image.height,{
+
+  const defaultOpts = {
     minQuantizer: 33,
     maxQuantizer: 63,
     minQuantizerAlpha: 33,
@@ -27,13 +30,19 @@ export const encodeAvif = async (image) => {
     tileRowsLog2: 0,
     speed: 8,
     subsample: 1,
-  });
-  return result
-}
+  }
 
-export const encodeJpeg = async (image) => {
+  if (!opts) {
+    opts = defaultOpts
+  }
+  const result = module.encode(image.data, image.width, image.height, opts);
+  return result;
+};
+
+export const encodeJpeg = async (image, opts) => {
   const module = await mozEnc();
-  const result = module.encode(image.data, image.width, image.height,{
+
+  const defaultOpts = {
     quality: 75,
     baseline: false,
     arithmetic: false,
@@ -50,13 +59,20 @@ export const encodeJpeg = async (image) => {
     chroma_subsample: 2,
     separate_chroma_quality: false,
     chroma_quality: 75,
-  });
-  return result
-}
+  }
 
-export const encodeWebP = async (image) => {
+  if (!opts) {
+    opts = defaultOpts
+  }
+
+  const result = module.encode(image.data, image.width, image.height, opts);
+  return result;
+};
+
+export const encodeWebP = async (image, opts) => {
   const module = await webp_enc();
-  const result = module.encode(image.data, image.width, image.height, {
+
+  const defaultOpts = {
     quality: 75,
     target_size: 0,
     target_PSNR: 0,
@@ -84,13 +100,130 @@ export const encodeWebP = async (image) => {
     near_lossless: 100,
     use_delta_palette: 0,
     use_sharp_yuv: 0,
-  });
-  return result
-}
+  }
 
-export const setImage = async (imageResult, type, id) => {
+  if (!opts) {
+    opts = defaultOpts
+  }
+
+  const result = module.encode(image.data, image.width, image.height, opts);
+  return result;
+};
+
+export const rotateImage = async (image, rotateDimention) => {
+  const r = await fetch("assets/codecs/rotate/rotate.wasm");
+  const buf = await r.arrayBuffer();
+  const instancePromise = await WebAssembly.instantiate(buf);
+  const instance = instancePromise.instance;
+  const bytesPerImage = image.width * image.height * 4;
+  const numPagesNeeded = Math.ceil((bytesPerImage * 2 + 8) / (64 * 1024));
+  const numPagesAvailable = Math.floor(
+    instance.exports.memory.buffer.byteLength / (64 * 1024)
+  );
+  const additionalPagesToAllocate = numPagesNeeded - numPagesAvailable;
+  if (additionalPagesToAllocate > 0) {
+    instance.exports.memory.grow(additionalPagesToAllocate);
+  }
+  const view = new Uint8ClampedArray(instance.exports.memory.buffer);
+  view.set(image.data, 8);
+  instance.exports.rotate(image.width, image.height, rotateDimention);
+  const flipDimensions = rotateDimention % 180 !== 0;
+  const flipWidth = flipDimensions ? image.height : image.width
+  const flipHeight = flipDimensions ? image.width : image.height
+  const imageData = new ImageData(
+    view.slice(bytesPerImage + 8, bytesPerImage * 2 + 8),
+    flipWidth,
+    flipHeight
+  );
+  return _imageDataToUrl(imageData, flipWidth, flipHeight);
+};
+
+export const resizeImage = async (image, outputWidth, outputHeight, aspectRatio = true) => {
+  await resize.default("assets/codecs/resize/pkg/squoosh_resize_bg.wasm");
+  if (aspectRatio) {
+    const finalSize = _resizeWithAspect(image.width, image.height, outputWidth, outputHeight)
+    outputWidth = finalSize.width
+    outputHeight = finalSize.height
+  }
+  const opts = {
+    method: 3, // triangle = 0, catrom = 1, mitchell = 2, lanczos3 = 3
+    fitMethod: 'stretch',
+    premultiply: true,
+    linearRGB: true,
+  }
+
+  let uintArray = resize.resize(
+    image.data,
+    image.width,
+    image.height,
+    outputWidth,
+    outputHeight,
+    opts.method,
+    opts.premultiply,
+    opts.linearRGB
+  )
+  return _Uint8ArrayToImage(uintArray, outputWidth, outputHeight)
+};
+
+export const setImageFromUrl = async (url, id) => {
+  const img = document.getElementById(id);
+  img.src = url;
+};
+
+export const setImageFromImageData = async (imageResult, type, id) => {
   const blob = new Blob([imageResult], { type: type });
   const blobURL = URL.createObjectURL(blob);
   const img = document.getElementById(id);
   img.src = blobURL;
+};
+
+function _resizeWithAspect(
+  input_width,
+  input_height,
+  target_width,
+  target_height,
+) {
+  if (!target_width && !target_height) {
+    throw Error('Need to specify at least width or height when resizing');
+  }
+  if (target_width && target_height) {
+    return { width: target_width, height: target_height };
+  }
+  if (!target_width) {
+    return {
+      width: Math.round((input_width / input_height) * target_height),
+      height: target_height,
+    };
+  }
+  if (!target_height) {
+    return {
+      width: target_width,
+      height: Math.round((input_height / input_width) * target_width),
+    };
+  }
+}
+
+function _Uint8ArrayToImage(ubuf, width, height) {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  const imgData = ctx.createImageData(width, height);
+  for (let i = 0; i < ubuf.length; i += 4) {
+    imgData.data[i] = ubuf[i];   //red
+    imgData.data[i + 1] = ubuf[i + 1]; //green
+    imgData.data[i + 2] = ubuf[i + 2]; //blue
+    imgData.data[i + 3] = ubuf[i + 3]; //alpha
+  }
+  ctx.putImageData(imgData, 0, 0);
+  return canvas.toDataURL();
+}
+
+function _imageDataToUrl(imageData, width ,height) {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  ctx.putImageData(imageData, 0, 0);
+  return canvas.toDataURL('image/jpeg', 1.0);
 }
