@@ -1,0 +1,3 @@
+[submodule "squoosh"]
+	path = squoosh
+	url = https://github.com/GoogleChromeLabs/squoosh/
