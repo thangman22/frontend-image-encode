@@ -9,13 +9,13 @@ Wait a moment please...
 
 ## Progress
 
-- **DONE** MozJPEG
-- **DONE** WebP
-- **DONE** AVIF
-- JXL
-- WP2
-- PNG
-- OxiPNG
-- ImageQuant
-- **DONE** Rotate
-- **DONE** Resize
+- **DONE** ---- MozJPEG
+- **DONE** ---- WebP
+- **DONE** ---- AVIF
+- **On Progress** JXL
+- **On Progress** WP2
+- **On Progress** PNG
+- **On Progress** OxiPNG
+- **On Progress** ImageQuant
+- **DONE** ---- Rotate
+- **DONE** ---- Resize
