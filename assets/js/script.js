@@ -1,16 +1,20 @@
 // MozJPEG
-import mozEnc from "/squoosh/codecs/mozjpeg/enc/mozjpeg_enc.js";
+import moz_enc from "/squoosh/codecs/mozjpeg/enc/mozjpeg_enc.js";
 // WebP
 import webp_enc from "/squoosh/codecs/webp/enc/webp_enc.js";
 // AVIF
-import avif from "/squoosh/codecs/avif/enc/avif_enc.js";
+import avif_enc from "/squoosh/codecs/avif/enc/avif_enc.js";
 
 // JXL
+import wp2_enc from "/squoosh/codecs/wp2/enc/wp2_enc.js";
 // WP2
+import jxl_enc from "/squoosh/codecs/jxl/enc/jxl_enc.js";
 // PNG
+import * as png_enc_dec from "/squoosh/codecs/png/pkg/squoosh_png.js";
 // OxiPNG
+import * as oxipng_enc from "/squoosh/codecs/oxipng/pkg/squoosh_oxipng.js";
 // ImageQuant
-
+import imagequant from "/squoosh/codecs/imagequant/imagequant.js";
 // Resize
 import * as resize from "/squoosh/codecs/resize/pkg/squoosh_resize.js";
 
@@ -29,7 +33,7 @@ export const loadImage = async src => {
 };
 
 export const encodeAvif = async (image, opts) => {
-  const module = await avif();
+  const module = await avif_enc();
 
   const defaultOpts = {
     minQuantizer: 33,
@@ -50,7 +54,7 @@ export const encodeAvif = async (image, opts) => {
 };
 
 export const encodeJpeg = async (image, opts) => {
-  const module = await mozEnc();
+  const module = await moz_enc();
 
   const defaultOpts = {
     quality: 75,
@@ -117,7 +121,88 @@ export const encodeWebP = async (image, opts) => {
   }
 
   const result = module.encode(image.data, image.width, image.height, opts);
-  return _imageDataToBolb(result);
+  return _imageDataToBolb(result, 'image/webp');
+};
+
+export const encodeWebP2 = async (image, opts) => {
+  const module = await wp2_enc();
+
+  const defaultOpts = {
+    quality: 75,
+    alpha_quality: 75,
+    effort: 5,
+    pass: 1,
+    sns: 50,
+    uv_mode: 0 /*UVMode.UVModeAuto*/,
+    csp_type: 0 /*Csp.kYCoCg*/,
+    error_diffusion: 0,
+    use_random_matrix: false,
+  }
+
+  if (!opts) {
+    opts = defaultOpts
+  }
+
+  const result = module.encode(image.data, image.width, image.height, opts);
+  return _imageDataToBolb(result, 'image/webp2');
+};
+
+export const quantizeImage = async (image, opts) => {
+  const module = await imagequant();
+  
+  const defaultOpts = {
+    numColors: 255,
+    dither: 1.0,
+  }
+
+  if (!opts) {
+    opts = defaultOpts
+  }
+
+  const rawImage = module.quantize(
+    image.data,
+    image.width,
+    image.height,
+    256,
+    1.0,
+  );
+  return _Uint8ArrayToUrl(rawImage, image.width, image.height)
+}
+
+export const encodeOnixPng = async (image, opts) => {
+  await png_enc_dec.default("/squoosh/codecs/png/pkg/squoosh_png_bg.wasm");
+  await oxipng_enc.default("/squoosh/codecs/oxipng/pkg/squoosh_oxipng_bg.wasm");
+  const defaultOpts = {
+    level: 2,
+  }
+
+  if (!opts) {
+    opts = defaultOpts
+  }
+  
+  const simplePng = png_enc_dec.encode(image.data, image.width, image.height);
+  const result = oxipng_enc.optimise(simplePng, opts.level)
+  return _imageDataToBolb(result, 'image/png');
+};
+
+export const encodeJxl = async (image, opts) => {
+  const module = await jxl_enc();
+
+  const defaultOpts = {
+    speed: 4,
+    quality: 75,
+    progressive: false,
+    epf: -1,
+    nearLossless: 0,
+    lossyPalette: false,
+  }
+
+  if (!opts) {
+    opts = defaultOpts
+  }
+
+  const result = module.encode(image.data, image.width, image.height, opts);
+  return _imageDataToBolb(result, 'image/jpegxl');
 };
 
 export const rotateImage = async (image, rotateDimention) => {
@@ -172,8 +257,8 @@ export const resizeImage = async (image, outputWidth, outputHeight, aspectRatio 
     opts.premultiply,
     opts.linearRGB
   )
-  return _Uint8ArrayToUrl(uintArray, outputWidth, outputHeight)
-};
+  return _Uint8ArrayToUrl(uintArray, outputWidth, outputHeight, 'image/jpeg')
+}
 
 function _resizeWithAspect(
   input_width,
@@ -201,12 +286,12 @@ function _resizeWithAspect(
   }
 }
 
-const _imageDataToBolb = async (imageResult, type, id) => {
+const _imageDataToBolb = async (imageResult, type) => {
   const blob = new Blob([imageResult], { type: type });
   return URL.createObjectURL(blob);
 };
 
-function _Uint8ArrayToUrl(ubuf, width, height) {
+function _Uint8ArrayToUrl(ubuf, width, height, type) {
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
@@ -219,10 +304,10 @@ function _Uint8ArrayToUrl(ubuf, width, height) {
     imgData.data[i + 3] = ubuf[i + 3]; //alpha
   }
   ctx.putImageData(imgData, 0, 0);
-  return canvas.toDataURL();
+  return canvas.toDataURL(type, 1.0);
 }
 
-function _imageDataToUrl(imageData, width ,height) {
+function _imageDataToUrl(imageData, width, height) {
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;

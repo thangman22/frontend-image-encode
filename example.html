@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Image Encode</title>
-    <script type="module">
-      import { loadImage, encodeWebP, encodeAvif, encodeJpeg, rotateImage, resizeImage } from "./assets/js/script.js";
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Encode</title>
+  <script type="module">
+    import { loadImage, encodeWebP,encodeWebP2, encodeAvif, encodeJpeg, encodeJxl, rotateImage, resizeImage, encodeOnixPng, quantizeImage } from "./assets/js/script.js";
 
       (async () => {
         const image = await loadImage("./assets/images/example.jpg");
@@ -15,38 +16,61 @@
         document.getElementById('webp-image').src = webPImageResult
         console.log('Webp Encoded');
 
-        const avifImageResult = await encodeAvif(image);
-        document.getElementById('avif-image').src = avifImageResult
-        console.log('Avif Encoded');
+        // const webP2ImageResult = await encodeWebP2(image);
+        // document.getElementById('webp2-image').src = webP2ImageResult
+        // console.log('Webp2 Encoded');
 
-        const jpegImageResult = await encodeJpeg(image);
-        document.getElementById('jpeg-image').src = jpegImageResult
-        console.log('Jpeg Encoded');
+        // const pngImageResult = await encodeOnixPng(image);
+        // document.getElementById('png-image').src = pngImageResult
+        // console.log('OnixPng Encoded');
 
-        const rotateImageResult = await rotateImage(image, 90);
-        document.getElementById('rotate-image').src = rotateImageResult
-        console.log('Rotate Image');
+        // const avifImageResult = await encodeAvif(image);
+        // document.getElementById('avif-image').src = avifImageResult
+        // console.log('Avif Encoded');
 
-        const resizeImageResult = await resizeImage(image,100,null,true)
-        document.getElementById('resize-image').src = resizeImageResult
-        console.log('Resize Image');
+        // const jpegImageResult = await encodeJpeg(image);
+        // document.getElementById('jpeg-image').src = jpegImageResult
+        // console.log('Jpeg Encoded');
+
+        // const rotateImageResult = await rotateImage(image, 90);
+        // document.getElementById('rotate-image').src = rotateImageResult
+        // console.log('Rotate Image');
+
+        // const resizeImageResult = await resizeImage(image,100,null,true)
+        // document.getElementById('resize-image').src = resizeImageResult
+        // console.log('Resize Image');
+
+        const quantizeResult = await quantizeImage(image);
+        document.getElementById('quantize-image').src = quantizeResult
+        console.log('Quantize Encoded');
+
       })();
     </script>
-  </head>
-  <body>
-    <div>
-      Original Image
-      <div><img src="./assets/images/example.jpg" width="500" /></div>
-      WebP Image
-      <div><img id="webp-image" width="500" /></div>
-      Avif Image
-      <div><img id="avif-image" width="500" /></div>
-      Jpeg Image
-      <div><img id="jpeg-image" width="500" /></div>
-      Rotate Image
-      <div><img id="rotate-image" width="500" /></div>
-      Resize Image
-      <div><img id="resize-image" width="100" /></div>
-    </div>
-  </body>
+</head>
+
+<body>
+  <div>
+    Original Image
+    <div><img src="./assets/images/example.jpg" width="500" /></div>
+    WebP Image
+    <div><img id="webp-image" width="500" /></div>
+    WebP2 Image
+    <div><img id="webp2-image" width="500" /></div>
+    Jxl Image
+    <div><img id="jxl-image" width="500" /></div>
+    Avif Image
+    <div><img id="avif-image" width="500" /></div>
+    Jpeg Image
+    <div><img id="jpeg-image" width="500" /></div>
+    Png Image
+    <div><img id="png-image" width="500" /></div>
+    Rotate Image
+    <div><img id="rotate-image" width="500" /></div>
+    Resize Image
+    <div><img id="resize-image" width="100" /></div>
+    Quantize Image
+    <div><img id="quantize-image" width="100" /></div>
+  </div>
+</body>
+
 </html>

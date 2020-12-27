@@ -12,10 +12,9 @@ Wait a moment please...
 - **DONE** ---- MozJPEG
 - **DONE** ---- WebP
 - **DONE** ---- AVIF
-- **On Progress** JXL
-- **On Progress** WP2
-- **On Progress** PNG
-- **On Progress** OxiPNG
-- **On Progress** ImageQuant
+- **Browser not support** JXL
+- **Browser not support** WP2
+- **DONE** OxiPNG
+- **DONE** ImageQuant
 - **DONE** ---- Rotate
 - **DONE** ---- Resize
