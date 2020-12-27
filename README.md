@@ -18,3 +18,4 @@ Wait a moment please...
 - **DONE** ImageQuant
 - **DONE** ---- Rotate
 - **DONE** ---- Resize
+- **DONE** ---- Resize HQX

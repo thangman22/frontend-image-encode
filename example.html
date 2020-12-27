@@ -6,39 +6,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Image Encode</title>
   <script type="module">
-    import { loadImage, encodeWebP,encodeWebP2, encodeAvif, encodeJpeg, encodeJxl, rotateImage, resizeImage, encodeOnixPng, quantizeImage } from "./assets/js/script.js";
+    import { loadImage, encodeWebP,encodeWebP2, encodeAvif, encodeJpeg, encodeJxl, rotateImage, resizeImage, encodeOnixPng, quantizeImage, resizePixelImage } from "./assets/js/script.js";
 
       (async () => {
         const image = await loadImage("./assets/images/example.jpg");
+        const imagePixel = await loadImage("./assets/images/example_pixel.png");
         console.log('Image Loaded');
         
         const webPImageResult = await encodeWebP(image);
         document.getElementById('webp-image').src = webPImageResult
         console.log('Webp Encoded');
 
-        // const webP2ImageResult = await encodeWebP2(image);
-        // document.getElementById('webp2-image').src = webP2ImageResult
-        // console.log('Webp2 Encoded');
+        const pngImageResult = await encodeOnixPng(image);
+        document.getElementById('png-image').src = pngImageResult
+        console.log('OnixPng Encoded');
 
-        // const pngImageResult = await encodeOnixPng(image);
-        // document.getElementById('png-image').src = pngImageResult
-        // console.log('OnixPng Encoded');
+        const avifImageResult = await encodeAvif(image);
+        document.getElementById('avif-image').src = avifImageResult
+        console.log('Avif Encoded');
 
-        // const avifImageResult = await encodeAvif(image);
-        // document.getElementById('avif-image').src = avifImageResult
-        // console.log('Avif Encoded');
+        const jpegImageResult = await encodeJpeg(image);
+        document.getElementById('jpeg-image').src = jpegImageResult
+        console.log('Jpeg Encoded');
 
-        // const jpegImageResult = await encodeJpeg(image);
-        // document.getElementById('jpeg-image').src = jpegImageResult
-        // console.log('Jpeg Encoded');
+        const rotateImageResult = await rotateImage(image, 90);
+        document.getElementById('rotate-image').src = rotateImageResult
+        console.log('Rotate Image');
 
-        // const rotateImageResult = await rotateImage(image, 90);
-        // document.getElementById('rotate-image').src = rotateImageResult
-        // console.log('Rotate Image');
+        const resizeImageResult = await resizeImage(image, 300, null, null, true, false)
+        document.getElementById('resize-image').src = resizeImageResult
+        console.log('Resize Image');
 
-        // const resizeImageResult = await resizeImage(image,100,null,true)
-        // document.getElementById('resize-image').src = resizeImageResult
-        // console.log('Resize Image');
+        const resizePixelImageResult = await resizePixelImage(imagePixel)
+        document.getElementById('resize-pixel-image').src = resizePixelImageResult
+        console.log('Resize Pixel Image');
 
         const quantizeResult = await quantizeImage(image);
         document.getElementById('quantize-image').src = quantizeResult
@@ -54,10 +55,6 @@
     <div><img src="./assets/images/example.jpg" width="500" /></div>
     WebP Image
     <div><img id="webp-image" width="500" /></div>
-    WebP2 Image
-    <div><img id="webp2-image" width="500" /></div>
-    Jxl Image
-    <div><img id="jxl-image" width="500" /></div>
     Avif Image
     <div><img id="avif-image" width="500" /></div>
     Jpeg Image
@@ -66,10 +63,12 @@
     <div><img id="png-image" width="500" /></div>
     Rotate Image
     <div><img id="rotate-image" width="500" /></div>
+    Resize Pixel Image
+    <div><img id="resize-pixel-image" width="100" /></div>
     Resize Image
     <div><img id="resize-image" width="100" /></div>
     Quantize Image
-    <div><img id="quantize-image" width="100" /></div>
+    <div><img id="quantize-image" width="500" /></div>
   </div>
 </body>
 
