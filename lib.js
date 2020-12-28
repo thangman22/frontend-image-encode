@@ -13,9 +13,6 @@ export const loadImage = async src => {
 };
 
 export const encodeAvif = async (image, opts) => {
-  const avifEnc = await import("/squoosh/codecs/avif/enc/avif_enc.js")
-  const module = await avifEnc.default()
-
   const defaultOpts = {
     minQuantizer: 33,
     maxQuantizer: 63,
@@ -25,19 +22,23 @@ export const encodeAvif = async (image, opts) => {
     tileRowsLog2: 0,
     speed: 8,
     subsample: 1,
+    module: {
+      avifEncJs: "/squoosh/codecs/avif/enc/avif_enc.js"
+    }
   }
 
   if (!opts) {
     opts = defaultOpts
   }
+
+  const avifEnc = await import(opts.module.avifEncJs)
+  const module = await avifEnc.default()
+
   const result = module.encode(image.data, image.width, image.height, opts);
   return _bolbToBase64(await _imageResultToBolb(result, 'image/avif'))
 };
 
 export const encodeJpeg = async (image, opts) => {
-  const mozEnc = await import("/squoosh/codecs/mozjpeg/enc/mozjpeg_enc.js")
-  const module = await mozEnc.default()
-
   const defaultOpts = {
     quality: 75,
     baseline: false,
@@ -55,20 +56,23 @@ export const encodeJpeg = async (image, opts) => {
     chroma_subsample: 2,
     separate_chroma_quality: false,
     chroma_quality: 75,
+    module: {
+      mozjpegEncJs: "/squoosh/codecs/mozjpeg/enc/mozjpeg_enc.js"
+    }
   }
 
   if (!opts) {
     opts = defaultOpts
   }
 
+  const mozEnc = await import(opts.module.mozjpegEncJs)
+  const module = await mozEnc.default()
+
   const result = module.encode(image.data, image.width, image.height, opts)
   return _bolbToBase64(await _imageResultToBolb(result, 'image/jpeg'))
 };
 
 export const encodeWebP = async (image, opts) => {
-  const webpEnc = await import("/squoosh/codecs/webp/enc/webp_enc.js")
-  const module = await webpEnc.default()
-
   const defaultOpts = {
     quality: 75,
     target_size: 0,
@@ -97,11 +101,17 @@ export const encodeWebP = async (image, opts) => {
     near_lossless: 100,
     use_delta_palette: 0,
     use_sharp_yuv: 0,
+    module: {
+      webpEncJs: "/squoosh/codecs/webp/enc/webp_enc.js"
+    }
   }
 
   if (!opts) {
     opts = defaultOpts
   }
+
+  const webpEnc = await import(opts.module.webpEncJs)
+  const module = await webpEnc.default()
 
   const result = module.encode(image.data, image.width, image.height, opts);
   
@@ -109,8 +119,6 @@ export const encodeWebP = async (image, opts) => {
 };
 
 export const encodeWebP2 = async (image, opts) => {
-  const wp2Enc = await import("/squoosh/codecs/wp2/enc/wp2_enc.js")
-  const module = await wp2Enc.default()
 
   const defaultOpts = {
     quality: 75,
@@ -122,29 +130,43 @@ export const encodeWebP2 = async (image, opts) => {
     csp_type: 0 /*Csp.kYCoCg*/,
     error_diffusion: 0,
     use_random_matrix: false,
+    module: {
+      wp2EncJs : "/squoosh/codecs/wp2/enc/wp2_enc.js"
+    }
   }
 
   if (!opts) {
     opts = defaultOpts
   }
+
+  const wp2Enc = await import(opts.module.wp2EncJs)
+  const module = await wp2Enc.default()
 
   const result = module.encode(image.data, image.width, image.height, opts);
   return _bolbToBase64(await _imageResultToBolb(result, 'image/webp2'))
 };
 
 export const encodeOnixPng = async (image, opts) => {
-  const pngEncDec = await import("/squoosh/codecs/png/pkg/squoosh_png.js")
-  const oxipngEnc = await import("/squoosh/codecs/oxipng/pkg/squoosh_oxipng.js")
 
-  await pngEncDec.default("/squoosh/codecs/png/pkg/squoosh_png_bg.wasm");
-  await oxipngEnc.default("/squoosh/codecs/oxipng/pkg/squoosh_oxipng_bg.wasm");
   const defaultOpts = {
     level: 2,
+    module: {
+      pngEncDecJs: "/squoosh/codecs/png/pkg/squoosh_png.js",
+      oxipngEncJs: "/squoosh/codecs/oxipng/pkg/squoosh_oxipng.js",
+      squooshPngBgWasm: "/squoosh/codecs/png/pkg/squoosh_png_bg.wasm",
+      squooshOxipngBgWasm: "/squoosh/codecs/oxipng/pkg/squoosh_oxipng_bg.wasm"
+    }
   }
 
   if (!opts) {
     opts = defaultOpts
   }
+
+  const pngEncDec = await import(opts.module.pngEncDecJs)
+  const oxipngEnc = await import(opts.module.oxipngEncJs)
+
+  await pngEncDec.default(opts.module.squooshPngBgWasm);
+  await oxipngEnc.default(opts.module.squooshOxipngBgWasm);
 
   const simplePng = pngEncDec.encode(image.data, image.width, image.height);
   const result = oxipngEnc.optimise(simplePng, opts.level)
@@ -152,8 +174,6 @@ export const encodeOnixPng = async (image, opts) => {
 };
 
 export const encodeJxl = async (image, opts) => {
-  const jxlEnc = await import("/squoosh/codecs/jxl/enc/jxl_enc.js")
-  const module = await jxlEnc.default()
 
   const defaultOpts = {
     speed: 4,
@@ -162,18 +182,35 @@ export const encodeJxl = async (image, opts) => {
     epf: -1,
     nearLossless: 0,
     lossyPalette: false,
+    module: {
+      jxlEncJs: "/squoosh/codecs/jxl/enc/jxl_enc.js"
+    }
   }
 
   if (!opts) {
     opts = defaultOpts
   }
 
+  const jxlEnc = await import(opts.module.jxlEncJs)
+  const module = await jxlEnc.default()
+
   const result = module.encode(image.data, image.width, image.height, opts);
   return _bolbToBase64(await _imageResultToBolb(result, 'image/jpegxl'));
 };
 
-export const rotateImage = async (image, rotateDimention) => {
-  const r = await fetch("/squoosh/codecs/rotate/rotate.wasm");
+export const rotateImage = async (image, rotateDimention,opts) => {
+
+  const defaultOpts = {
+    module: {
+      rotateWasm: "/squoosh/codecs/rotate/rotate.wasm"
+    }
+  }
+
+  if (!opts) {
+    opts = defaultOpts
+  }
+
+  const r = await fetch(oipts.module.rotateWasm);
   const buf = await r.arrayBuffer();
   const instancePromise = await WebAssembly.instantiate(buf);
   const instance = instancePromise.instance;
@@ -204,16 +241,20 @@ export const resizePixelImage = async (image, opts) => {
 
   let uintArray
 
-    const resize = await import("/squoosh/codecs/hqx/pkg/squooshhqx.js")
-    await resize.default("/squoosh/codecs/hqx/pkg/squooshhqx_bg.wasm")
-
-    const defaultOpts = {
-      factor: 2
+  const defaultOpts = {
+    factor: 2,
+    module: {
+      squooshhqxJs: "/squoosh/codecs/hqx/pkg/squooshhqx.js",
+      squooshhqxBgWasm: "/squoosh/codecs/hqx/pkg/squooshhqx_bg.wasm"
     }
+  }
 
-    if (!opts) {
-      opts = defaultOpts
-    }
+  if (!opts) {
+    opts = defaultOpts
+  }
+
+    const resize = await import(opts.module.squooshhqxJs)
+    await resize.default(opts.module.squooshhqxBgWasm)
 
     let result = resize.resize(
       new Uint32Array(image.data.buffer),
@@ -231,25 +272,29 @@ export const resizePixelImage = async (image, opts) => {
 
 export const resizeImage = async (image, outputWidth, outputHeight, opts, aspectRatio = true) => {
 
+  const defaultOpts = {
+    method: 3, // triangle = 0, catrom = 1, mitchell = 2, lanczos3 = 3
+    fitMethod: 'stretch',
+    premultiply: true,
+    linearRGB: true,
+    module: {
+      squooshResizeJs: "/squoosh/codecs/resize/pkg/squoosh_resize.js",
+      squooshResizeBgWasm: "/squoosh/codecs/resize/pkg/squoosh_resize_bg.wasm"
+    }
+  }
+
+  if (!opts) {
+    opts = defaultOpts
+  }
+
   if (aspectRatio) {
     const finalSize = _resizeWithAspect(image.width, image.height, outputWidth, outputHeight)
     outputWidth = finalSize.width
     outputHeight = finalSize.height
   }
   
-    const resize = await import("/squoosh/codecs/resize/pkg/squoosh_resize.js")
-    await resize.default("/squoosh/codecs/resize/pkg/squoosh_resize_bg.wasm");
-  
-    const defaultOpts = {
-      method: 3, // triangle = 0, catrom = 1, mitchell = 2, lanczos3 = 3
-      fitMethod: 'stretch',
-      premultiply: true,
-      linearRGB: true,
-    }
-  
-    if (!opts) {
-      opts = defaultOpts
-    }
+    const resize = await import(opts.module.squooshResizeJs)
+    await resize.default(opts.module.squooshResizeBgWasm);
 
     let uintArray = resize.resize(
       image.data,
@@ -267,17 +312,20 @@ export const resizeImage = async (image, outputWidth, outputHeight, opts, aspect
 
 export const quantizeImage = async (image, opts) => {
 
-  const imagequant = await import("/squoosh/codecs/imagequant/imagequant.js")
-  const module = await imagequant.default()
-
   const defaultOpts = {
     numColors: 255,
     dither: 1.0,
+    module: {
+      imagequantJs: "/squoosh/codecs/imagequant/imagequant.js"
+    }
   }
 
   if (!opts) {
     opts = defaultOpts
   }
+
+  const imagequant = await import(opts.module.imagequantJs)
+  const module = await imagequant.default()
 
   const rawImage = module.quantize(
     image.data,
