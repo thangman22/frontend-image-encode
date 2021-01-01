@@ -41,7 +41,7 @@ Wait a moment please...
 
 ### Encode WebP
 
-Convert image to webp format with [https://github.com/webmproject/libwebp]
+Convert image to webp format with https://github.com/webmproject/libwebp
 
 ```javascript
 // Available & Default options
