@@ -210,7 +210,7 @@ export const rotateImage = async (image, rotateDimention,opts) => {
     opts = defaultOpts
   }
 
-  const r = await fetch(oipts.module.rotateWasm);
+  const r = await fetch(opts.module.rotateWasm);
   const buf = await r.arrayBuffer();
   const instancePromise = await WebAssembly.instantiate(buf);
   const instance = instancePromise.instance;

@@ -6,7 +6,34 @@ This is script and implementation of frontend image compression, convert, rotate
 ## How to 
 
 Wait a moment please...
+## Usage
 
+```
+<script type="module">
+    import { loadImage, encodeWebP, encodeWebP2, encodeAvif, encodeJpeg, encodeJxl, rotateImage, resizeImage, encodeOnixPng, quantizeImage, resizePixelImage } from "./lib.js";
+
+    // Load image before encode 
+    const image = await loadImage("./assets/images/example.jpg");
+
+    // Define options is nees
+    const options = {
+        minQuantizer: 33,
+        maxQuantizer: 63,
+        minQuantizerAlpha: 33,
+        maxQuantizerAlpha: 63,
+        tileColsLog2: 0,
+        tileRowsLog2: 0,
+        speed: 8,
+        subsample: 1,
+        module: {
+            avifEncJs: "/squoosh/codecs/avif/enc/avif_enc.js"
+        }
+    }
+
+    // Call function to encode image return is base64 format
+    const webPImageResult = await encodeAvif(image, options);
+</script>
+```
 ## Progress
 
 - **DONE** ---- MozJPEG

@@ -8,44 +8,58 @@
   <script type="module">
     import { loadImage, encodeWebP,encodeWebP2, encodeAvif, encodeJpeg, encodeJxl, rotateImage, resizeImage, encodeOnixPng, quantizeImage, resizePixelImage } from "./lib.js";
 
-      (async () => {
-        const image = await loadImage("./assets/images/example.jpg");
-        const imagePixel = await loadImage("./assets/images/example_pixel.png");
-        console.log('Image Loaded');
-        
-        const webPImageResult = await encodeWebP(image);
-        document.getElementById('webp-image').src = webPImageResult
-        console.log('Webp Encoded');
+    function getImageSize(img) {
+      var base64str = img.split('base64,')[1];
+      var decoded = atob(base64str);
+      return bytesToSize(decoded.length)
+    }
 
-        const pngImageResult = await encodeOnixPng(image);
-        document.getElementById('png-image').src = pngImageResult
-        console.log('OnixPng Encoded');
+    function bytesToSize(bytes) {
+      var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+      if (bytes == 0) return '0 Byte';
+      var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+      return (bytes / Math.pow(1024, i)).toFixed(3) + ' ' + sizes[i];
+    }
 
-        const avifImageResult = await encodeAvif(image);
-        document.getElementById('avif-image').src = avifImageResult
-        console.log('Avif Encoded');
+    (async () => {
+      const image = await loadImage("./assets/images/example.jpg");
+      const imagePixel = await loadImage("./assets/images/example_pixel.png");
 
-        const jpegImageResult = await encodeJpeg(image);
-        document.getElementById('jpeg-image').src = jpegImageResult
-        console.log('Jpeg Encoded');
+      console.log('Image Loaded');
+      
+      const webPImageResult = await encodeWebP(image);
+      document.getElementById('webp-image').src = webPImageResult
+      console.log(`Webp Encoded ${getImageSize(webPImageResult)}`);
 
-        const rotateImageResult = await rotateImage(image, 90);
-        document.getElementById('rotate-image').src = rotateImageResult
-        console.log('Rotate Image');
+      const pngImageResult = await encodeOnixPng(image);
+      document.getElementById('png-image').src = pngImageResult
+      console.log(`OnixPng Encoded ${getImageSize(pngImageResult)}`);
 
-        const resizeImageResult = await resizeImage(image, 300, null, null, true, false)
-        document.getElementById('resize-image').src = resizeImageResult
-        console.log('Resize Image');
+      const avifImageResult = await encodeAvif(image);
+      document.getElementById('avif-image').src = avifImageResult
+      console.log(`Avif Encoded ${getImageSize(avifImageResult)}`);
 
-        const resizePixelImageResult = await resizePixelImage(imagePixel)
-        document.getElementById('resize-pixel-image').src = resizePixelImageResult
-        console.log('Resize Pixel Image');
+      const jpegImageResult = await encodeJpeg(image);
+      document.getElementById('jpeg-image').src = jpegImageResult
+      console.log(`Jpeg Encoded ${getImageSize(jpegImageResult)}`);
 
-        const quantizeResult = await quantizeImage(image);
-        document.getElementById('quantize-image').src = quantizeResult
-        console.log('Quantize Encoded');
+      const rotateImageResult = await rotateImage(image, 90);
+      document.getElementById('rotate-image').src = rotateImageResult
+      console.log('Rotate Image');
 
-      })();
+      const resizeImageResult = await resizeImage(image, 300, null, null, true, false)
+      document.getElementById('resize-image').src = resizeImageResult
+      console.log('Resize Image');
+
+      const resizePixelImageResult = await resizePixelImage(imagePixel)
+      document.getElementById('resize-pixel-image').src = resizePixelImageResult
+      console.log('Resize Pixel Image');
+
+      const quantizeResult = await quantizeImage(image);
+      document.getElementById('quantize-image').src = quantizeResult
+      console.log(`Quantize Encoded ${getImageSize(quantizeResult)}`);
+
+    })();
     </script>
 </head>
 
