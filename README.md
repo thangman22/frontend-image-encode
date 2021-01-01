@@ -39,9 +39,9 @@ Wait a moment please...
 
 ## Available methods & options
 
-### Encode WebP
+### Encode WEBP
 
-Convert image to webp format with https://github.com/webmproject/libwebp
+Convert image to WEBP format with https://github.com/webmproject/libwebp
 
 ```javascript
 // Available & Default options
@@ -81,7 +81,10 @@ const options = {
 // Call function to encode image return is base64 format
 const result = await encodeWebP(image, options);
 ```
-### encodeAvif
+### Encode AVIF
+
+Convert image to AVIF format
+
 ```javascript
 // Available & Default options
 const options = {
@@ -101,7 +104,10 @@ const options = {
 // Call function to encode image return is base64 format
 const result = await encodeWebP(image, options);
 ```
-### encodeJpeg
+### Encode JPEG
+
+Encode JPEG image with mozjpeg
+
 ```javascript
 // Available & Default options
 const options = {
@@ -129,13 +135,34 @@ const options = {
 // Call function to encode image return is base64 format
 const result = await encodeJpeg(image, options);
 ```
-### rotateImage
+
+### Encode PNG
+
+Encode PNG image with oxipng
+
+```javascript
+// Available & Default options
+const options = {
+    level: 2,
+    module: {
+        pngEncDecJs: "/squoosh/codecs/png/pkg/squoosh_png.js",
+        oxipngEncJs: "/squoosh/codecs/oxipng/pkg/squoosh_oxipng.js",
+        squooshPngBgWasm: "/squoosh/codecs/png/pkg/squoosh_png_bg.wasm",
+        squooshOxipngBgWasm: "/squoosh/codecs/oxipng/pkg/squoosh_oxipng_bg.wasm"
+    }
+}
+
+// Call function to encode image return is base64 format
+const result = await encodeOnixPng(image, options);
+```
+### Rotate Image
+
 ```javascript
 const degree = 90
 // Call function to encode image return is base64 format
 const result = await rotateImage(image, degree);
 ```
-### resizeImage
+### Resize Image
 ```javascript
 const outputWidth = 300
 const outputHeight = 300
@@ -154,7 +181,7 @@ const aspectRatio = true
 // Call function to encode image return is base64 format
 const result = await resizeImage(image, outputWidth, outputHeight, options, aspectRatio)
 ```
-### resizePixelImage
+### Resize Pixel Art Image
 ```javascript
 const options = {
     factor: 2,
@@ -165,7 +192,7 @@ const options = {
 }
 const result = await resizePixelImage(image, options)
 ```
-### quantizeImage
+### Reduce Color of Image
 ```javascript
 const options = {
     numColors: 255,
@@ -179,7 +206,7 @@ const result = await quantizeImage(image, options)
 
 *** Browser Not Support yet ***
 
-### encodeWebP2
+### encode WEBP2
 ```javascript
 const options = {
     quality: 75,
@@ -197,7 +224,7 @@ const options = {
 }
 const result = await encodeWebP2(image, options)
 ```
-### encodeJxl
+### encode JPEGXL
 ```javascript
 const options = {
     speed: 4,
