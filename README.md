@@ -39,7 +39,10 @@ Wait a moment please...
 
 ## Available methods & options
 
-### encodeWebP
+### Encode WebP
+
+Convert image to webp format with [https://github.com/webmproject/libwebp]
+
 ```javascript
 // Available & Default options
 const options = {
