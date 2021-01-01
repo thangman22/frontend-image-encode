@@ -1,11 +1,6 @@
 # Frontend Image compression
 
 This is script and implementation of frontend image compression, convert, rotate, resize based on codecs in [Google/Squoosh](https://github.com/GoogleChromeLabs/squoosh). All codecs are copy from the Squoosh repo without modifying. if you want to pre-process images before uploading them to the server, please use this repo for reference
-
-
-## How to 
-
-Wait a moment please...
 ## Usage
 
 ```html
@@ -81,6 +76,7 @@ const options = {
 // Call function to encode image return is base64 format
 const result = await encodeWebP(image, options);
 ```
+---
 ### Encode AVIF
 
 Convert image to AVIF format
@@ -104,6 +100,7 @@ const options = {
 // Call function to encode image return is base64 format
 const result = await encodeWebP(image, options);
 ```
+---
 ### Encode JPEG
 
 Encode JPEG image with mozjpeg
@@ -135,7 +132,7 @@ const options = {
 // Call function to encode image return is base64 format
 const result = await encodeJpeg(image, options);
 ```
-
+---
 ### Encode PNG
 
 Encode PNG image with oxipng
@@ -155,6 +152,7 @@ const options = {
 // Call function to encode image return is base64 format
 const result = await encodeOnixPng(image, options);
 ```
+---
 ### Rotate Image
 
 ```javascript
@@ -162,6 +160,7 @@ const degree = 90
 // Call function to encode image return is base64 format
 const result = await rotateImage(image, degree);
 ```
+---
 ### Resize Image
 ```javascript
 const outputWidth = 300
@@ -181,6 +180,7 @@ const aspectRatio = true
 // Call function to encode image return is base64 format
 const result = await resizeImage(image, outputWidth, outputHeight, options, aspectRatio)
 ```
+---
 ### Resize Pixel Art Image
 ```javascript
 const options = {
@@ -192,6 +192,7 @@ const options = {
 }
 const result = await resizePixelImage(image, options)
 ```
+---
 ### Reduce Color of Image
 ```javascript
 const options = {
@@ -203,6 +204,7 @@ const options = {
 }
 const result = await quantizeImage(image, options)
 ```
+---
 
 *** Browser Not Support yet ***
 
@@ -224,6 +226,7 @@ const options = {
 }
 const result = await encodeWebP2(image, options)
 ```
+---
 ### encode JPEGXL
 ```javascript
 const options = {
@@ -239,16 +242,8 @@ const options = {
 }
 const result = await encodeJxl(image, options)
 ```
+---
 
-## Progress
+## Todo
 
-- **DONE** ---- MozJPEG
-- **DONE** ---- WebP
-- **DONE** ---- AVIF
-- **Browser not support** JXL
-- **Browser not support** WP2
-- **DONE** OxiPNG
-- **DONE** ImageQuant
-- **DONE** ---- Rotate
-- **DONE** ---- Resize
-- **DONE** ---- Resize HQX
+- [ ] Support Web Worker (Not check yet)
