@@ -35,7 +35,7 @@ export const encodeAvif = async (image, opts) => {
   const module = await avifEnc.default()
 
   const result = module.encode(image.data, image.width, image.height, opts);
-  return _bolbToBase64(await _imageResultToBolb(result, 'image/avif'))
+  return _blobToBase64(await _imageResultToBlob(result, 'image/avif'))
 };
 
 export const encodeJpeg = async (image, opts) => {
@@ -69,7 +69,7 @@ export const encodeJpeg = async (image, opts) => {
   const module = await mozEnc.default()
 
   const result = module.encode(image.data, image.width, image.height, opts)
-  return _bolbToBase64(await _imageResultToBolb(result, 'image/jpeg'))
+  return _blobToBase64(await _imageResultToBlob(result, 'image/jpeg'))
 };
 
 export const encodeWebP = async (image, opts) => {
@@ -114,12 +114,10 @@ export const encodeWebP = async (image, opts) => {
   const module = await webpEnc.default()
 
   const result = module.encode(image.data, image.width, image.height, opts);
-  
-  return _bolbToBase64(await _imageResultToBolb(result, 'image/webp'))
+  return _blobToBase64(await _imageResultToBlob(result, 'image/webp'))
 };
 
 export const encodeWebP2 = async (image, opts) => {
-
   const defaultOpts = {
     quality: 75,
     alpha_quality: 75,
@@ -143,11 +141,10 @@ export const encodeWebP2 = async (image, opts) => {
   const module = await wp2Enc.default()
 
   const result = module.encode(image.data, image.width, image.height, opts);
-  return _bolbToBase64(await _imageResultToBolb(result, 'image/webp2'))
+  return _blobToBase64(await _imageResultToBlob(result, 'image/webp2'))
 };
 
 export const encodeOnixPng = async (image, opts) => {
-
   const defaultOpts = {
     level: 2,
     module: {
@@ -170,11 +167,10 @@ export const encodeOnixPng = async (image, opts) => {
 
   const simplePng = pngEncDec.encode(image.data, image.width, image.height);
   const result = oxipngEnc.optimise(simplePng, opts.level)
-  return _bolbToBase64(await _imageResultToBolb(result, 'image/png'))
+  return _blobToBase64(await _imageResultToBlob(result, 'image/png'))
 };
 
 export const encodeJxl = async (image, opts) => {
-
   const defaultOpts = {
     speed: 4,
     quality: 75,
@@ -195,11 +191,10 @@ export const encodeJxl = async (image, opts) => {
   const module = await jxlEnc.default()
 
   const result = module.encode(image.data, image.width, image.height, opts);
-  return _bolbToBase64(await _imageResultToBolb(result, 'image/jpegxl'));
+  return _blobToBase64(await _imageResultToBlob(result, 'image/jpegxl'));
 };
 
 export const rotateImage = async (image, rotateDimention,opts) => {
-
   const defaultOpts = {
     module: {
       rotateWasm: "/squoosh/codecs/rotate/rotate.wasm"
@@ -238,7 +233,6 @@ export const rotateImage = async (image, rotateDimention,opts) => {
 };
 
 export const resizePixelImage = async (image, opts) => {
-
   let uintArray
 
   const defaultOpts = {
@@ -271,7 +265,6 @@ export const resizePixelImage = async (image, opts) => {
 }
 
 export const resizeImage = async (image, outputWidth, outputHeight, opts, aspectRatio = true) => {
-
   const defaultOpts = {
     method: 3, // triangle = 0, catrom = 1, mitchell = 2, lanczos3 = 3
     fitMethod: 'stretch',
@@ -311,7 +304,6 @@ export const resizeImage = async (image, outputWidth, outputHeight, opts, aspect
 }
 
 export const quantizeImage = async (image, opts) => {
-
   const defaultOpts = {
     numColors: 255,
     dither: 1.0,
@@ -363,7 +355,7 @@ function _resizeWithAspect(
   }
 }
 
-const _imageResultToBolb = async (imageResult, type) => {
+const _imageResultToBlob = async (imageResult, type) => {
   const blob = new Blob([imageResult], { type: type });
   return blob;
 };
@@ -393,7 +385,7 @@ function _imageDataToBase64(imageData, width, height, type) {
   return canvas.toDataURL(type, 1.0);
 }
 
-function _bolbToBase64(blob) {
+function _blobToBase64(blob) {
   const reader = new FileReader();
   reader.readAsDataURL(blob);
   return new Promise(resolve => {
@@ -402,4 +394,3 @@ function _bolbToBase64(blob) {
     }
   })
 }
-
