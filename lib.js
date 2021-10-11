@@ -27,9 +27,7 @@ export const encodeAvif = async (image, opts) => {
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
   const avifEnc = await import(opts.module.avifEncJs)
   const module = await avifEnc.default()
@@ -61,9 +59,7 @@ export const encodeJpeg = async (image, opts) => {
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
   const mozEnc = await import(opts.module.mozjpegEncJs)
   const module = await mozEnc.default()
@@ -106,9 +102,7 @@ export const encodeWebP = async (image, opts) => {
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
   const webpEnc = await import(opts.module.webpEncJs)
   const module = await webpEnc.default()
@@ -133,9 +127,7 @@ export const encodeWebP2 = async (image, opts) => {
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
   const wp2Enc = await import(opts.module.wp2EncJs)
   const module = await wp2Enc.default()
@@ -155,9 +147,7 @@ export const encodeOnixPng = async (image, opts) => {
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
   const pngEncDec = await import(opts.module.pngEncDecJs)
   const oxipngEnc = await import(opts.module.oxipngEncJs)
@@ -183,9 +173,7 @@ export const encodeJxl = async (image, opts) => {
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
   const jxlEnc = await import(opts.module.jxlEncJs)
   const module = await jxlEnc.default()
@@ -201,9 +189,7 @@ export const rotateImage = async (image, rotateDimention,opts) => {
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
   const r = await fetch(opts.module.rotateWasm);
   const buf = await r.arrayBuffer();
@@ -243,9 +229,7 @@ export const resizePixelImage = async (image, opts) => {
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
     const resize = await import(opts.module.squooshhqxJs)
     await resize.default(opts.module.squooshhqxBgWasm)
@@ -276,9 +260,7 @@ export const resizeImage = async (image, outputWidth, outputHeight, opts, aspect
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
   if (aspectRatio) {
     const finalSize = _resizeWithAspect(image.width, image.height, outputWidth, outputHeight)
@@ -312,9 +294,7 @@ export const quantizeImage = async (image, opts) => {
     }
   }
 
-  if (!opts) {
-    opts = defaultOpts
-  }
+  opts = opts ? Object.assign(defaultOpts, opts) : defaultOpts;
 
   const imagequant = await import(opts.module.imagequantJs)
   const module = await imagequant.default()
