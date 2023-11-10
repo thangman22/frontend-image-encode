@@ -5,7 +5,7 @@ This is script and implementation of frontend image compression, convert, rotate
 
 ```html
 <script type="module">
-    import { loadImage, encodeWebP, encodeWebP2, encodeAvif, encodeJpeg, encodeJxl, rotateImage, resizeImage, encodeOnixPng, quantizeImage, resizePixelImage } from "./lib.js";
+    import { loadImage, encodeWebP, encodeWebP2, encodeAvif, encodeJpeg, encodeJxl, rotateImage, resizeImage, encodeOnixPng, quantizeImage, resizePixelImage } from "./index.js";
 
     // Load image before encode 
     const image = await loadImage("./assets/images/example.jpg");
