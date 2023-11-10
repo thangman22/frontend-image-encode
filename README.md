@@ -21,7 +21,7 @@ This is script and implementation of frontend image compression, convert, rotate
         speed: 8,
         subsample: 1,
         module: {
-            avifEncJs: "/squoosh/codecs/avif/enc/avif_enc.js"
+            avifEncJs: "/codecs/avif/enc/avif_enc.js"
         }
     }
 
@@ -69,7 +69,7 @@ const options = {
     use_delta_palette: 0,
     use_sharp_yuv: 0,
     module: {
-        webpEncJs: "/squoosh/codecs/webp/enc/webp_enc.js"
+        webpEncJs: "/codecs/webp/enc/webp_enc.js"
     }
 }
 
@@ -93,7 +93,7 @@ const options = {
     speed: 8,
     subsample: 1,
     module: {
-        avifEncJs: "/squoosh/codecs/avif/enc/avif_enc.js"
+        avifEncJs: "/codecs/avif/enc/avif_enc.js"
     }
 }
 
@@ -125,7 +125,7 @@ const options = {
     separate_chroma_quality: false,
     chroma_quality: 75,
     module: {
-        mozjpegEncJs: "/squoosh/codecs/mozjpeg/enc/mozjpeg_enc.js"
+        mozjpegEncJs: "/codecs/mozjpeg/enc/mozjpeg_enc.js"
     }
 }
 
@@ -142,10 +142,10 @@ Encode PNG image with oxipng
 const options = {
     level: 2,
     module: {
-        pngEncDecJs: "/squoosh/codecs/png/pkg/squoosh_png.js",
-        oxipngEncJs: "/squoosh/codecs/oxipng/pkg/squoosh_oxipng.js",
-        squooshPngBgWasm: "/squoosh/codecs/png/pkg/squoosh_png_bg.wasm",
-        squooshOxipngBgWasm: "/squoosh/codecs/oxipng/pkg/squoosh_oxipng_bg.wasm"
+        pngEncDecJs: "/codecs/png/pkg/squoosh_png.js",
+        oxipngEncJs: "/codecs/oxipng/pkg/squoosh_oxipng.js",
+        squooshPngBgWasm: "/codecs/png/pkg/squoosh_png_bg.wasm",
+        squooshOxipngBgWasm: "/codecs/oxipng/pkg/squoosh_oxipng_bg.wasm"
     }
 }
 
@@ -171,8 +171,8 @@ const options = {
     premultiply: true,
     linearRGB: true,
     module: {
-        squooshResizeJs: "/squoosh/codecs/resize/pkg/squoosh_resize.js",
-        squooshResizeBgWasm: "/squoosh/codecs/resize/pkg/squoosh_resize_bg.wasm"
+        squooshResizeJs: "/codecs/resize/pkg/squoosh_resize.js",
+        squooshResizeBgWasm: "/codecs/resize/pkg/squoosh_resize_bg.wasm"
     }
 }
 const aspectRatio = true
@@ -186,8 +186,8 @@ const result = await resizeImage(image, outputWidth, outputHeight, options, aspe
 const options = {
     factor: 2,
     module: {
-        squooshhqxJs: "/squoosh/codecs/hqx/pkg/squooshhqx.js",
-        squooshhqxBgWasm: "/squoosh/codecs/hqx/pkg/squooshhqx_bg.wasm"
+        squooshhqxJs: "/codecs/hqx/pkg/squooshhqx.js",
+        squooshhqxBgWasm: "/codecs/hqx/pkg/squooshhqx_bg.wasm"
     }
 }
 const result = await resizePixelImage(image, options)
@@ -199,7 +199,7 @@ const options = {
     numColors: 255,
     dither: 1.0,
     module: {
-        imagequantJs: "/squoosh/codecs/imagequant/imagequant.js"
+        imagequantJs: "/codecs/imagequant/imagequant.js"
     }
 }
 const result = await quantizeImage(image, options)
@@ -221,7 +221,7 @@ const options = {
     error_diffusion: 0,
     use_random_matrix: false,
     module: {
-        wp2EncJs : "/squoosh/codecs/wp2/enc/wp2_enc.js"
+        wp2EncJs : "/codecs/wp2/enc/wp2_enc.js"
     }
 }
 const result = await encodeWebP2(image, options)
@@ -237,7 +237,7 @@ const options = {
     nearLossless: 0,
     lossyPalette: false,
     module: {
-        jxlEncJs: "/squoosh/codecs/jxl/enc/jxl_enc.js"
+        jxlEncJs: "/codecs/jxl/enc/jxl_enc.js"
     }
 }
 const result = await encodeJxl(image, options)

@@ -25,7 +25,7 @@ export const encodeAvif = async (image, opts) => {
     denoiseLevel: 0,
     tune: 0,
     module: {
-      avifEncJs: '/codecs/avif/enc/avif_enc.js',
+      avifEncJs: './codecs/avif/enc/avif_enc.js',
     },
   };
 
@@ -57,7 +57,7 @@ export const encodeJpeg = async (image, opts) => {
     separate_chroma_quality: false,
     chroma_quality: 75,
     module: {
-      mozjpegEncJs: '/codecs/mozjpeg/enc/mozjpeg_enc.js',
+      mozjpegEncJs: './codecs/mozjpeg/enc/mozjpeg_enc.js',
     },
   };
 
@@ -100,7 +100,7 @@ export const encodeWebP = async (image, opts) => {
     use_delta_palette: 0,
     use_sharp_yuv: 0,
     module: {
-      webpEncJs: '/codecs/webp/enc/webp_enc.js',
+      webpEncJs: './codecs/webp/enc/webp_enc.js',
     },
   };
 
@@ -125,7 +125,7 @@ export const encodeWebP2 = async (image, opts) => {
     error_diffusion: 0,
     use_random_matrix: false,
     module: {
-      wp2EncJs: '/codecs/wp2/enc/wp2_enc.js',
+      wp2EncJs: './codecs/wp2/enc/wp2_enc.js',
     },
   };
 
@@ -142,10 +142,10 @@ export const encodeOnixPng = async (image, opts) => {
   const defaultOpts = {
     level: 2,
     module: {
-      pngEncDecJs: '/codecs/png/pkg/squoosh_png.js',
-      oxipngEncJs: '/codecs/oxipng/pkg/squoosh_oxipng.js',
-      squooshPngBgWasm: '/codecs/png/pkg/squoosh_png_bg.wasm',
-      squooshOxipngBgWasm: '/codecs/oxipng/pkg/squoosh_oxipng_bg.wasm',
+      pngEncDecJs: './codecs/png/pkg/squoosh_png.js',
+      oxipngEncJs: './codecs/oxipng/pkg/squoosh_oxipng.js',
+      squooshPngBgWasm: './codecs/png/pkg/squoosh_png_bg.wasm',
+      squooshOxipngBgWasm: './codecs/oxipng/pkg/squoosh_oxipng_bg.wasm',
     },
   };
 
@@ -171,7 +171,7 @@ export const encodeJxl = async (image, opts) => {
     nearLossless: 0,
     lossyPalette: false,
     module: {
-      jxlEncJs: '/codecs/jxl/enc/jxl_enc.js',
+      jxlEncJs: './codecs/jxl/enc/jxl_enc.js',
     },
   };
 
@@ -187,7 +187,7 @@ export const encodeJxl = async (image, opts) => {
 export const rotateImage = async (image, rotateDimention, opts) => {
   const defaultOpts = {
     module: {
-      rotateWasm: '/codecs/rotate/rotate.wasm',
+      rotateWasm: './codecs/rotate/rotate.wasm',
     },
   };
 
@@ -226,8 +226,8 @@ export const resizePixelImage = async (image, opts) => {
   const defaultOpts = {
     factor: 2,
     module: {
-      squooshhqxJs: '/codecs/hqx/pkg/squooshhqx.js',
-      squooshhqxBgWasm: '/codecs/hqx/pkg/squooshhqx_bg.wasm',
+      squooshhqxJs: './codecs/hqx/pkg/squooshhqx.js',
+      squooshhqxBgWasm: './codecs/hqx/pkg/squooshhqx_bg.wasm',
     },
   };
 
@@ -263,8 +263,8 @@ export const resizeImage = async (
     premultiply: true,
     linearRGB: true,
     module: {
-      squooshResizeJs: '/codecs/resize/pkg/squoosh_resize.js',
-      squooshResizeBgWasm: '/codecs/resize/pkg/squoosh_resize_bg.wasm',
+      squooshResizeJs: './codecs/resize/pkg/squoosh_resize.js',
+      squooshResizeBgWasm: './codecs/resize/pkg/squoosh_resize_bg.wasm',
     },
   };
 
@@ -303,7 +303,7 @@ export const quantizeImage = async (image, opts) => {
     numColors: 255,
     dither: 1.0,
     module: {
-      imagequantJs: '/codecs/imagequant/imagequant.js',
+      imagequantJs: './codecs/imagequant/imagequant.js',
     },
   };
 
