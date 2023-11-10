@@ -1,0 +1,16 @@
+{
+  "name": "frontend-image-encode",
+  "version": "1.0.0",
+  "description": "This is script and implementation of frontend image compression, convert, rotate, resize based on codecs in [Google/Squoosh](https://github.com/GoogleChromeLabs/squoosh). All codecs are copy from the Squoosh repo without modifying. if you want to pre-process images before uploading them to the server, please use this repo for reference ## Usage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "thangman22",
+  "license": "apache-2.0",
+  "keywords": [
+    "image-compress",
+    "wasm",
+    "image-encode"
+  ]
+}
